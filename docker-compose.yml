@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # Sua aplicação Python
+  app:
+    build: .
+    container_name: esg_app
+    environment:
+      - MONGO_URI=mongodb://db:27017/
+    depends_on:
+      - db
+    networks:
+      - esg-network
+
+  # O Banco de Dados MongoDB
+  db:
+    image: mongo:latest
+    container_name: esg_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - esg-network
+
+networks:
+  esg-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
